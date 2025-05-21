@@ -1,5 +1,20 @@
 import { useState } from 'react'
 
+const Statistics = ({ good, neutral, bad, total, average, positive }) => {
+
+  return (<>
+    <h2>Statistics</h2>
+    <div>
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+      <p>All: {total}</p>
+      <p>Average: {average}</p>
+      <p>Positive: {positive}</p>
+    </div>
+  </>)
+}
+
 const App = () => {
   // guarda los clics de cada botón en su propio estado
   const [feedback, setFeedback] = useState({
@@ -13,11 +28,11 @@ const App = () => {
 
   const handleGood = () => {
     const moreGood = {
-    ...feedback,
-    good: feedback.good + 1
+      ...feedback,
+      good: feedback.good + 1
     }
     setFeedback(moreGood)
- 
+
     const totalVotes = moreGood.good + feedback.neutral + feedback.bad
     setTotal(totalVotes)
 
@@ -30,8 +45,8 @@ const App = () => {
 
   const handleNeutral = () => {
     const moreNeutral = {
-    ...feedback,
-    neutral: feedback.neutral + 1
+      ...feedback,
+      neutral: feedback.neutral + 1
     }
     setFeedback(moreNeutral)
 
@@ -47,8 +62,8 @@ const App = () => {
 
   const handleBad = () => {
     const moreBad = {
-    ...feedback,
-    bad: feedback.bad + 1
+      ...feedback,
+      bad: feedback.bad + 1
     }
     setFeedback(moreBad)
 
@@ -70,15 +85,7 @@ const App = () => {
         <button onClick={() => handleNeutral()}>Neutral</button>
         <button onClick={() => handleBad()}>Bad</button>
       </div>
-      <h2>Statistics</h2>
-      <div>
-        <p>Good: {feedback.good}</p>
-        <p>Neutral: {feedback.neutral}</p>
-        <p>Bad: {feedback.bad}</p>
-        <p>All: {total}</p>
-        <p>Average: {average}</p>
-        <p>Positive: {positive}</p>
-      </div>
+      <Statistics good={feedback.good} neutral={feedback.neutral} bad={feedback.bad} total={total} average={average} positive={positive}/>
     </div>
   )
 }
