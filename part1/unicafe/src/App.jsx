@@ -28,7 +28,12 @@ const Button = ({ handleGood, handleNeutral, handleBad }) => {
 // }
 
 const StatisticsLine = ({ value, text }) => {
-  return <p>{text}: {value}</p>
+  return (
+    <tr>
+      <td>{text}:</td>
+      <td>{value}</td>
+    </tr>
+  )
 }
 
 const App = () => {
@@ -52,10 +57,10 @@ const App = () => {
     const totalVotes = moreGood.good + feedback.neutral + feedback.bad
     setTotal(totalVotes)
 
-    const averageVotes = (moreGood.good - feedback.bad) / totalVotes
+    const averageVotes = Math.round(((moreGood.good - feedback.bad) / totalVotes) * 100) / 100
     setAverage(averageVotes)
 
-    const positiveVotes = moreGood.good / totalVotes
+    const positiveVotes = Math.round((moreGood.good / totalVotes) * 100) + "%"
     setPositive(positiveVotes)
   }
 
@@ -69,10 +74,10 @@ const App = () => {
     const totalVotes = feedback.good + moreNeutral.neutral + feedback.bad
     setTotal(totalVotes)
 
-    const averageVotes = (feedback.good - feedback.bad) / totalVotes
+    const averageVotes = Math.round(((moreNeutral.good - feedback.bad) / totalVotes) * 100) / 100
     setAverage(averageVotes)
 
-    const positiveVotes = feedback.good / totalVotes
+    const positiveVotes = Math.round((moreNeutral.good / totalVotes) * 100) + "%"
     setPositive(positiveVotes)
   }
 
@@ -86,10 +91,10 @@ const App = () => {
     const totalVotes = feedback.good + feedback.neutral + moreBad.bad
     setTotal(totalVotes)
 
-    const averageVotes = (feedback.good - moreBad.bad) / totalVotes
+    const averageVotes = Math.round(((moreBad.good - feedback.bad) / totalVotes) * 100) / 100
     setAverage(averageVotes)
 
-    const positiveVotes = feedback.good / totalVotes
+    const positiveVotes = Math.round((moreBad.good / totalVotes) * 100) + "%"
     setPositive(positiveVotes)
   }
 
@@ -98,14 +103,16 @@ const App = () => {
       <h2>Give me feedback!</h2>
       <Button handleGood={handleGood} handleNeutral={handleNeutral} handleBad={handleBad} />
       <h2>Statistics</h2>
-      {total > 0 ? <div>
-        <StatisticsLine value={feedback.good} text={"Good"} />
-        <StatisticsLine value={feedback.neutral} text={"Neutral"} />
-        <StatisticsLine value={feedback.bad} text={"Bad"} />
-        <StatisticsLine value={total} text={"Total"} />
-        <StatisticsLine value={average} text={"Average"} />
-        <StatisticsLine value={positive} text={"Positive"} />
-      </div> : <p>No feedback given</p>}
+      {total > 0 ? <table>
+        <tbody>
+          <StatisticsLine value={feedback.good} text={"Good"} />
+          <StatisticsLine value={feedback.neutral} text={"Neutral"} />
+          <StatisticsLine value={feedback.bad} text={"Bad"} />
+          <StatisticsLine value={total} text={"Total"} />
+          <StatisticsLine value={average} text={"Average"} />
+          <StatisticsLine value={positive} text={"Positive"} />
+        </tbody>
+      </table> : <p>No feedback given</p>}
     </div>
   )
 }
