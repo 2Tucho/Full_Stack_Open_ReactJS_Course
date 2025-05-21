@@ -1,20 +1,34 @@
 import { useState } from 'react'
 
-const Statistics = ({ good, neutral, bad, total, average, positive }) => {
-  if(total > 0) {
-    return (<>
-    <h2>Statistics</h2>
+const Button = ({ handleGood, handleNeutral, handleBad }) => {
+
+  return (
     <div>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All: {total}</p>
-      <p>Average: {average}</p>
-      <p>Positive: {positive}</p>
+      <button onClick={() => handleGood()}>Good</button>
+      <button onClick={() => handleNeutral()}>Neutral</button>
+      <button onClick={() => handleBad()}>Bad</button>
     </div>
-  </>)
-  } else return <p>No feedback given</p>
-  
+  )
+}
+
+// const Statistics = ({ good, neutral, bad, total, average, positive }) => {
+//   if (total > 0) {
+//     return (<>
+
+//       <div>
+//         <p>Good: {good}</p>
+//         <p>Neutral: {neutral}</p>
+//         <p>Bad: {bad}</p>
+//         <p>All: {total}</p>
+//         <p>Average: {average}</p>
+//         <p>Positive: {positive}</p>
+//       </div>
+//     </>)
+//   } else return <p>No feedback given</p>
+// }
+
+const StatisticsLine = ({ value, text }) => {
+  return <p>{text}: {value}</p>
 }
 
 const App = () => {
@@ -82,12 +96,16 @@ const App = () => {
   return (
     <div>
       <h2>Give me feedback!</h2>
-      <div>
-        <button onClick={() => handleGood()}>Good</button>
-        <button onClick={() => handleNeutral()}>Neutral</button>
-        <button onClick={() => handleBad()}>Bad</button>
-      </div>
-      <Statistics good={feedback.good} neutral={feedback.neutral} bad={feedback.bad} total={total} average={average} positive={positive}/>
+      <Button handleGood={handleGood} handleNeutral={handleNeutral} handleBad={handleBad} />
+      <h2>Statistics</h2>
+      {total > 0 ? <div>
+        <StatisticsLine value={feedback.good} text={"Good"} />
+        <StatisticsLine value={feedback.neutral} text={"Neutral"} />
+        <StatisticsLine value={feedback.bad} text={"Bad"} />
+        <StatisticsLine value={total} text={"Total"} />
+        <StatisticsLine value={average} text={"Average"} />
+        <StatisticsLine value={positive} text={"Positive"} />
+      </div> : <p>No feedback given</p>}
     </div>
   )
 }
