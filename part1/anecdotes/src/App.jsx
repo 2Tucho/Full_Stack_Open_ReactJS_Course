@@ -20,9 +20,11 @@ const App = () => {
     const newVotes = [...totalVotes]
     newVotes[anecdoteNum] += 1
     setTotalVotes(newVotes)
+    console.log(totalVotes)
+    console.log(totalVotes.indexOf(Math.max(...totalVotes)))
   }
 
-  const handleClick = () => {
+  const handleRandom = () => {
     const randomAnecdote = Math.floor(Math.random() * anecdotes.length)
     console.log("randomAnecdote", randomAnecdote)
     setSelected(randomAnecdote)
@@ -30,10 +32,14 @@ const App = () => {
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
       <p>Has {totalVotes[selected]} votes</p>
       <button onClick={() => handleVotes(selected)}>Vote</button>
-      <button onClick={() => handleClick()}>Random Anecdote</button>
+      <button onClick={() => handleRandom()}>Random Anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[totalVotes.indexOf(Math.max(...totalVotes))]}</p>
+      <p>Has {Math.max(...totalVotes)} votes</p>
     </div>
   )
 }
