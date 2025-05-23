@@ -2,19 +2,18 @@ import Header from "./Header/Header";
 import Content from "./Content/Content";
 import Total from "./Total/Total";
 
-const Course = ({ course }) => {
-
-    // for(let i = 0; i < course.parts.length; i++) {
-    //     totalExercises += course.parts[i].exercises
-    // }
-
-    return (
-        <div>
-            <Header name={course.name} />
-            <Content parts={course.parts} />
-            <Total parts={course.parts} />
-        </div>
-    )
+const Course = ({ courses }) => {
+ 
+    return <>
+        {courses.map(elem => {
+            return <div key={elem.id}>
+                <Header name={elem.name} />
+                <Content parts={elem.parts} />
+                <Total parts={elem.parts} />
+            </div>
+        })}
+    </>
+    
 }
 
 export default Course
