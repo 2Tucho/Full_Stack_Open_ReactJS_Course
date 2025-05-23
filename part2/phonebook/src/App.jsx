@@ -8,12 +8,21 @@ const App = () => {
 
   const addNewName = (event) => {
     event.preventDefault()
+    console.log(persons)
+    for (let i = 0; i < persons.length; i++) {
+      if(persons[i].name.toLowerCase().includes(newName.toLowerCase())) {
+        alert(`${newName} is already added to phonebook`)
+        setNewName("")
+        return
+      }
+    }
+
     const personObject = {
       name: newName
     }
 
     setPersons(persons.concat(personObject))
-    setNewName('')
+    setNewName("")
   }
 
   const handleNameChange = (event) => {
