@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import FilterPersons from './FilterPersons/FilterPersons'
-import Form from './Form/Form'
-import ShowFilteredNames from './ShowFilteredNames/ShowFilteredNames'
-import axios from 'axios'
+import FilterPersons from './components/FilterPersons/FilterPersons'
+import Form from './components/Form/Form'
+import ShowFilteredNames from './components/ShowFilteredNames/ShowFilteredNames'
+import personsService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,11 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState("")
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        const personsData = response.data
-        setPersons(personsData)
+    personsService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -34,12 +33,10 @@ const App = () => {
       number: newNumber
     }
 
-    axios
-      .post('http://localhost:3001/persons', personObject)
-      .then(response => {
-        setPersons(notes.concat(response.data))
-        setNewName("")
-        setNewNumber("")
+    personsService
+      .create(personObject)
+      .then(returnedNote => {
+        setPersons(persons.concat(returnedNote)) // El método concat no cambia el estado original del componente, sino que crea una nueva copia de la lista.
       })
 
   }
