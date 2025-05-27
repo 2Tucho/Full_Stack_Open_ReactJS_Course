@@ -56,14 +56,13 @@ const App = () => {
     setFilter(filterPersons)
   }
 
-  const deletePerson = (id) => {
+  const deletePerson = (id, name) => {
     console.log(`The id ${id} has been removed`)
     personsService
       .deletePerson(id)
-      .then(deletedPerson => {
-        console.log(deletedPerson)
+      .then(() => {
+        window.confirm(`Are you sure you want to delete ${name} permamently?`)
         setPersons(persons.filter(person => person.id !== id))
-        console.log(persons)
       })
   }
 
