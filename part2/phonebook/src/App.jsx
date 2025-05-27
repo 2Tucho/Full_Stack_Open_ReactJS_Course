@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
-import FilterPersons from './components/FilterPersons/FilterPersons'
-import Form from './components/Form/Form'
-import ShowFilteredNames from './components/ShowFilteredNames/ShowFilteredNames'
-import personsService from './services/persons'
+import { useEffect, useState } from "react"
+import FilterPersons from "./components/FilterPersons/FilterPersons"
+import Form from "./components/Form/Form"
+import ShowFilteredNames from "./components/ShowFilteredNames/ShowFilteredNames"
+import personsService from "./services/persons"
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
-  const [filter, setFilter] = useState("")
+  const [newName, setNewName] = useState("")
+  const [newNumber, setNewNumber] = useState("")
+  const [filter, setFilter] = useState("")  
 
   useEffect(() => {
     personsService
@@ -35,8 +35,10 @@ const App = () => {
 
     personsService
       .create(personObject)
-      .then(returnedNote => {
-        setPersons(persons.concat(returnedNote)) // El método concat no cambia el estado original del componente, sino que crea una nueva copia de la lista.
+      .then(returnedperson => {
+        setPersons(persons.concat(returnedperson)) // El método concat no cambia el estado original del componente, sino que crea una nueva copia de la lista.
+        setNewName("")
+        setNewNumber("")
       })
 
   }
@@ -54,8 +56,20 @@ const App = () => {
     setFilter(filterPersons)
   }
 
+  const deletePerson = (id) => {
+    console.log(`The id ${id} has been removed`)
+    personsService
+      .deletePerson(id)
+      .then(deletedPerson => {
+        console.log(deletedPerson)
+        setPersons(persons.filter(person => person.id !== id))
+        console.log(persons)
+      })
+  }
+
   return (
     <div>
+
       <h2>Phonebook</h2>
 
       <FilterPersons filterNames={filterNames} />
@@ -66,7 +80,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <ShowFilteredNames filter={filter} persons={persons} />
+      <ShowFilteredNames filter={filter} persons={persons} deletePerson={deletePerson} />
 
     </div>
   )

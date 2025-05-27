@@ -1,12 +1,19 @@
-const ShowFilteredNames = ({ filter, persons }) => {
-    return <div>
-        {filter === "" ? persons.map(elem =>
-        <p key={elem.name}>{elem.name} {elem.number}</p>
-      ) :
-        filter.map(elem =>
-        <p key={elem.name}>{elem.name} {elem.number}</p>
+const ShowFilteredNames = ({ filter, persons, deletePerson }) => {
+  return <>
+    {filter === "" ? persons.map(elem => 
+      <div key={elem.id}>
+        <p>{elem.name} {elem.number}</p>
+        <button onClick={() => deletePerson(elem.id)}>Delete</button>
+      </div>
+    ) :
+      filter.map(elem =>
+        <div key={elem.id}>
+          <p>{elem.name} {elem.number}</p>
+          <button onClick={() => deletePerson(elem.id)}>Delete</button>
+        </div>
       )}
-    </div>
+  </>
+
 }
 
 export default ShowFilteredNames
