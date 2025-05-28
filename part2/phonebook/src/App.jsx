@@ -8,7 +8,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
-  const [filter, setFilter] = useState("")  
+  const [filter, setFilter] = useState([])
 
   useEffect(() => {
     personsService
@@ -22,8 +22,19 @@ const App = () => {
     event.preventDefault()
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name.toLowerCase().includes(newName.toLowerCase())) {
-        alert(`${newName} is already added to phonebook`)
-        setNewName("")
+        const findName = persons.find(p => p.id === persons[i].id)
+        const changeNumber = { ...findName, number: newNumber }
+        console.log("changeNumber", changeNumber)
+
+        if (window.confirm(`${persons[i].name} is already added to the phonebook, replace the old number with a new one?`)) {
+          personsService
+            .update(persons[i].id, changeNumber)
+            .then(() => {
+              setPersons(persons.map(person => person.id !== persons[i].id ? person : changeNumber))
+            })
+          setNewName("")
+          setNewNumber("")
+        }
         return
       }
     }
@@ -36,7 +47,7 @@ const App = () => {
     personsService
       .create(personObject)
       .then(returnedperson => {
-        setPersons(persons.concat(returnedperson)) // El método concat no cambia el estado original del componente, sino que crea una nueva copia de la lista.
+        setPersons(persons.concat(returnedperson))
         setNewName("")
         setNewNumber("")
       })
@@ -57,13 +68,13 @@ const App = () => {
   }
 
   const deletePerson = (id, name) => {
-    console.log(`The id ${id} has been removed`)
-    personsService
-      .deletePerson(id)
-      .then(() => {
-        window.confirm(`Are you sure you want to delete ${name} permamently?`)
-        setPersons(persons.filter(person => person.id !== id))
-      })
+    if (window.confirm(`Are you sure you want to delete ${name} permamently?`)) {
+      personsService
+        .deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    } else return
   }
 
   return (

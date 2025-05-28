@@ -1,6 +1,6 @@
 const ShowFilteredNames = ({ filter, persons, deletePerson }) => {
   return <>
-    {filter === "" ? persons.map(elem => 
+    {filter.length === 0 ? persons.map(elem => 
       <div key={elem.id}>
         <p>{elem.name} {elem.number}</p>
         <button onClick={() => deletePerson(elem.id)}>Delete</button>
