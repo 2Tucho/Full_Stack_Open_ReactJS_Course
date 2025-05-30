@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("")
   const [filter, setFilter] = useState([])
   const [successMessage, setSuccessMessage] = useState(null)
+  const [messageType, setMessageType] = useState(null)
 
   useEffect(() => {
     personsService
@@ -26,7 +27,6 @@ const App = () => {
       if (persons[i].name.toLowerCase().includes(newName.toLowerCase())) {
         const findName = persons.find(p => p.id === persons[i].id)
         const changeNumber = { ...findName, number: newNumber }
-        console.log("changeNumber", changeNumber)
 
         if (window.confirm(`${persons[i].name} is already added to the phonebook, replace the old number with a new one?`)) {
           personsService
@@ -39,6 +39,17 @@ const App = () => {
               setTimeout(() => {
                 setSuccessMessage(null)
               }, 3000)
+            })
+            //ERROR
+            .catch(error => {
+              setMessageType("error")
+              setSuccessMessage(
+                `Information from ${newName} was already removed from the server`
+              )
+              setTimeout(() => {
+                setSuccessMessage(null)
+              }, 3000)
+              setPersons(persons.filter(p => p.id !== persons[i].id))
             })
           setNewName("")
           setNewNumber("")
@@ -56,6 +67,7 @@ const App = () => {
       .create(personObject)
       .then(returnedperson => {
         setPersons(persons.concat(returnedperson))
+        setMessageType("success")
         setSuccessMessage(
           `Added ${newName}`
         )
@@ -96,7 +108,7 @@ const App = () => {
 
       <h2>Phonebook</h2>
 
-      <Notification message={successMessage} />
+      <Notification message={successMessage} type={messageType} />
 
       <FilterPersons filterNames={filterNames} />
 
