@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import FilterPersons from "./components/FilterPersons/FilterPersons"
 import Form from "./components/Form/Form"
+import Notification from "./components/Notification/Notification"
 import ShowFilteredNames from "./components/ShowFilteredNames/ShowFilteredNames"
 import personsService from "./services/persons"
 
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
   const [filter, setFilter] = useState([])
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     personsService
@@ -31,6 +33,12 @@ const App = () => {
             .update(persons[i].id, changeNumber)
             .then(() => {
               setPersons(persons.map(person => person.id !== persons[i].id ? person : changeNumber))
+              setSuccessMessage(
+                `${newName}'s number was updated`
+              )
+              setTimeout(() => {
+                setSuccessMessage(null)
+              }, 3000)
             })
           setNewName("")
           setNewNumber("")
@@ -48,6 +56,12 @@ const App = () => {
       .create(personObject)
       .then(returnedperson => {
         setPersons(persons.concat(returnedperson))
+        setSuccessMessage(
+          `Added ${newName}`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 3000)
         setNewName("")
         setNewNumber("")
       })
@@ -81,6 +95,8 @@ const App = () => {
     <div>
 
       <h2>Phonebook</h2>
+
+      <Notification message={successMessage} />
 
       <FilterPersons filterNames={filterNames} />
 
