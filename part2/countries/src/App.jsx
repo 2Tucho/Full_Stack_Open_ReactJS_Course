@@ -20,6 +20,13 @@ function App() {
     setNewCountry(filterCountry)
   }
 
+  const showCountry = (name) => {
+    console.log(name)
+    console.log(allCountries.filter(elem => elem.name.common === name))
+    const showDetails = allCountries.filter(elem => elem.name.common === name)
+    setNewCountry(showDetails)
+  }
+
   return (
     <>
       <div>
@@ -28,7 +35,10 @@ function App() {
       {newCountry.length > 10 && newCountry.length < 249 ? 
         <p>Too many matches, specify ahother filter</p>
       : newCountry.length > 1 && newCountry.length <= 10 ?
-        newCountry.map((elem, i) => <p key={i}>{elem.name.common}</p>)
+        newCountry.map((elem, i) => <>
+          <p key={i}>{elem.name.common}</p>
+          <button onClick={() => showCountry(elem.name.common)}>Show</button>
+        </>)
       : newCountry.length == 1 ?
         <div>
           <h1>{newCountry[0].name.common}</h1>
