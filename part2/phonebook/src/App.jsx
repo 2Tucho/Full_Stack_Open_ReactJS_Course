@@ -19,6 +19,7 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
+      
   }, [])
 
   const addNewName = (event) => {
